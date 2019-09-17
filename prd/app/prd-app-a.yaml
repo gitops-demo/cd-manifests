@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prd-app-a
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: app
+  source:
+    helm:
+      valueFiles:
+      - values/prd-app-a.yaml
+    path: app-a
+    repoURL: https://github.com/gitops-demo/manifests
+    targetRevision: prd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
